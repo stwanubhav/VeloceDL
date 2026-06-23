@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Veloce YouTube Downloader - Fast, Free Video & Audio Extractor</title>
+  <meta name="description" content="Download YouTube videos and Shorts in high quality MP4, or convert YouTube videos to MP3 audio online. Fast, clean, and secure.">
+  
+  <!-- Font and Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Ambient Background Orbs -->
+  <div class="bg-orb orb-1"></div>
+  <div class="bg-orb orb-2"></div>
+  <div class="bg-orb orb-3"></div>
+
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header animate-fade-in">
+      <div class="logo">
+        <i class="fa-brands fa-youtube logo-icon"></i>
+        <h1>Veloce<span>DL</span></h1>
+      </div>
+      <p class="subtitle">Download YouTube videos, Shorts, and Audio in premium quality instantly</p>
+    </header>
+
+    <!-- Search Section -->
+    <main class="main-content">
+      <section class="search-section animate-slide-up">
+        <div class="glass-panel search-card">
+          <form id="searchForm" class="search-form">
+            <div class="input-wrapper">
+              <i class="fa-solid fa-link input-icon"></i>
+              <input 
+                type="url" 
+                id="urlInput" 
+                placeholder="Paste YouTube video or Shorts link here..." 
+                required
+                autocomplete="off"
+              >
+              <button type="button" id="pasteBtn" class="paste-btn" title="Paste from clipboard">
+                <i class="fa-regular fa-clipboard"></i> Paste
+              </button>
+            </div>
+            <button type="submit" id="searchSubmitBtn" class="btn btn-primary">
+              <span class="btn-text">Analyze</span>
+              <i class="fa-solid fa-arrow-right btn-icon"></i>
+            </button>
+          </form>
+          <div id="urlError" class="input-error-msg hidden">
+            <i class="fa-solid fa-circle-exclamation"></i> Please enter a valid YouTube URL
+          </div>
+        </div>
+      </section>
+
+      <!-- Loader (fetching metadata) -->
+      <section id="metadataLoader" class="loader-section hidden">
+        <div class="spinner-container">
+          <div class="double-spinner"></div>
+          <p>Fetching video information...</p>
+        </div>
+      </section>
+
+      <!-- Result Section -->
+      <section id="resultSection" class="result-section hidden animate-fade-in">
+        <div class="glass-panel result-card">
+          
+          <!-- Warning banner if FFmpeg is missing -->
+          <div id="ffmpegWarningBanner" class="warning-banner hidden">
+            <i class="fa-solid fa-triangle-exclamation warning-icon"></i>
+            <div class="warning-text">
+              <h4>FFmpeg is missing from the server</h4>
+              <p>High-resolution video merging (1080p+) and MP3 extractions are disabled. Only combined formats (360p/720p) are available. To download high-res files, please install FFmpeg on the server.</p>
+            </div>
+          </div>
+          
+          <!-- Video Info Panel -->
+          <div class="video-info-panel">
+            <div class="thumbnail-wrapper">
+              <img id="videoThumbnail" src="" alt="Video Thumbnail">
+              <span id="videoDuration" class="duration-badge">00:00</span>
+            </div>
+            <div class="video-details">
+              <h2 id="videoTitle">Video Title</h2>
+              <p class="channel-name">
+                <i class="fa-solid fa-circle-user"></i> <span id="videoChannel">Channel Name</span>
+              </p>
+              
+              <div class="video-meta-stats">
+                <span class="stat-item">
+                  <i class="fa-regular fa-calendar"></i> <span id="videoDate">Upload Date</span>
+                </span>
+                <span class="stat-item">
+                  <i class="fa-regular fa-eye"></i> <span id="videoViews">0</span> views
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Download Options Tabs -->
+          <div class="download-tabs-container">
+            <div class="tab-headers">
+              <button class="tab-btn active" data-tab="video-tab">
+                <i class="fa-solid fa-video"></i> Video (.MP4)
+              </button>
+              <button class="tab-btn" data-tab="audio-tab">
+                <i class="fa-solid fa-music"></i> Audio (.MP3)
+              </button>
+            </div>
+
+            <!-- Video Tab Content -->
+            <div id="video-tab" class="tab-content active">
+              <div class="table-responsive">
+                <table class="formats-table">
+                  <thead>
+                    <tr>
+                      <th>Resolution</th>
+                      <th>Format</th>
+                      <th>Size (Est.)</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="videoFormatsBody">
+                    <!-- Dynamic Rows -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Audio Tab Content -->
+            <div id="audio-tab" class="tab-content">
+              <div class="audio-download-card">
+                <div class="audio-icon-box">
+                  <i class="fa-solid fa-file-audio"></i>
+                </div>
+                <div class="audio-info">
+                  <h3>Best Available Audio Extract</h3>
+                  <p class="audio-details-text">
+                    Extension: <strong>.MP3</strong> | Bitrate: <strong id="audioBitrate">128 kbps</strong>
+                  </p>
+                  <p class="audio-size-text">
+                    Estimated size: <span id="audioSize">Calculating...</span>
+                  </p>
+                </div>
+                <button id="downloadAudioBtn" class="btn btn-audio">
+                  <i class="fa-solid fa-download"></i> Extract MP3
+                </button>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer animate-fade-in">
+      <p>&copy; 2026 VeloceDL. Made for high-speed conversions. Respect copyrights.</p>
+    </footer>
+  </div>
+
+  <!-- Download Progress Overlay Modal -->
+  <div id="progressModal" class="modal-overlay hidden">
+    <div class="glass-panel modal-card animate-scale-in">
+      <div class="modal-header">
+        <h3 id="modalHeaderTitle">Downloading media</h3>
+        <button id="closeModalBtn" class="close-modal-btn hidden"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      
+      <div class="modal-body">
+        <!-- Pulse Status Indicator -->
+        <div class="status-indicator">
+          <div id="statusPulseRing" class="pulse-ring active"></div>
+          <div id="statusIconBox" class="status-icon-box">
+            <i id="statusIcon" class="fa-solid fa-cloud-arrow-down"></i>
+          </div>
+        </div>
+
+        <h4 id="progressStatusText">Preparing download...</h4>
+        
+        <!-- Progress Bar container -->
+        <div class="progress-bar-wrapper">
+          <div class="progress-bar-track">
+            <div id="progressBarFill" class="progress-bar-fill" style="width: 0%"></div>
+          </div>
+          <div class="progress-stats">
+            <span id="progressPercent">0%</span>
+            <span id="progressSize">Unknown size</span>
+          </div>
+        </div>
+
+        <!-- Download Metrics (Speed & ETA) -->
+        <div id="downloadMetrics" class="download-metrics">
+          <div class="metric-box">
+            <span class="metric-label">Speed</span>
+            <span id="metricSpeed" class="metric-value">-- MB/s</span>
+          </div>
+          <div class="metric-divider"></div>
+          <div class="metric-box">
+            <span class="metric-label">ETA</span>
+            <span id="metricEta" class="metric-value">--:--</span>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="modal-actions">
+          <button id="cancelDownloadBtn" class="btn btn-danger">
+            <i class="fa-solid fa-ban"></i> Cancel Download
+          </button>
+          
+          <a id="saveFileBtn" class="btn btn-success hidden" href="" download>
+            <i class="fa-solid fa-circle-check"></i> Save File
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Custom script -->
+  <script src="app.js"></script>
+</body>
+</html>
