@@ -109,22 +109,6 @@ Download YouTube videos, Shorts, and audio with multiple quality options, real-t
 
 *Responsive interface optimized for mobile devices.*
 
----
-
-# 🖼️ Screenshot Gallery
-
-<p align="center">
-  <img src="screenshots/home.png" width="48%">
-  <img src="screenshots/video-info.png" width="48%">
-</p>
-
-<p align="center">
-  <img src="screenshots/quality-selection.png" width="48%">
-  <img src="screenshots/download-progress.png" width="48%">
-</p>
-
----
-
 # 🛠️ Tech Stack
 
 | Technology | Purpose |
