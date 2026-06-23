@@ -1,0 +1,7 @@
+node_modules/
+downloads/
+.env
+.git/
+*.exe
+ffmpeg*/
+npm-debug.log*
