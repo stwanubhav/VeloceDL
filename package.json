@@ -1,0 +1,32 @@
+{
+  "name": "youtube-downloader",
+  "version": "1.0.0",
+  "description": "Production-ready YouTube Video & Audio Downloader web application using Express, yt-dlp, and FFmpeg.",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node start.js",
+    "dev": "node src/server.js",
+    "install-binaries": "node install-binaries.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-rate-limit": "^7.2.0",
+    "sanitize-filename": "^1.6.3",
+    "uuid": "^9.0.1"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "youtube",
+    "downloader",
+    "yt-dlp",
+    "ffmpeg",
+    "express",
+    "audio-extractor"
+  ],
+  "author": "Antigravity",
+  "license": "MIT"
+}
